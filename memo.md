@@ -1,11 +1,21 @@
 ### position manager
 
-- code examples
-  - mint, increase / decrease liquidity, collect fees, burn position
 - key concepts
+  - Batch operations
+    - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
+  - Best practices for ordering:
+    - Group liquidity operations that create similar deltas (e.g., all negative or all positive)
+    - Resolve all deltas together at the end when possible
+    - Use CLOSE_CURRENCY when you can't predict the final delta
   - subscriber
   - permit2
-  - TODO: application - liquidity management with auto compound?
+- code examples
+  - `modifyLiquidities`
+    - `_executeActions` -> `_unlockCallback` -> `_handleAction`
+  - `modifyLiquiditiesWithoutUnlock`
+  - mint, increase / decrease liquidity, collect fees, burn position
+  - subscribe
+- TODO: application - liquidity management with auto compound?
 
   ```
   liquidity manager. maybe something fun like taking fees and putting them into a concentrated range

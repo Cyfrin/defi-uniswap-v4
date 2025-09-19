@@ -92,6 +92,7 @@ Please refer to this for an in-depth explanation of the content:
 - [GitHub - v4-periphery](https://github.com/Uniswap/v4-periphery)
 - [GitHub - universal-router](https://github.com/Uniswap/universal-router)
 - [GitHub - v4-template](https://github.com/uniswapfoundation/v4-template)
+- [GitHub - permit2](https://github.com/Uniswap/permit2)
 - [YouTube - Uniswap v4 on Unichain](https://www.youtube.com/watch?v=ZisqLqbakfM)
 - [Cyfrin - Uniswap V4 Swap: Deep Dive Into Execution and Accounting](https://www.cyfrin.io/blog/uniswap-v4-swap-deep-dive-into-execution-and-accounting)
 - [PoolManager - storage layout](https://www.evm.codes/contract?address=0x000000000004444c5dc75cb358380d2e3de08a90)
@@ -101,3 +102,4 @@ Please refer to this for an in-depth explanation of the content:
 - [Damian Rusinek - Secrets of Uniswap V4: A Deep Dive into Hooks Security](https://www.youtube.com/watch?v=VhEbnGSUdYY)
 - [`BaseHook`](https://github.com/Uniswap/v4-periphery/blob/main/src/utils/BaseHook.sol)
 - [`LimitOrder`](https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/LimitOrder.sol)
+- [Permit2](https://github.com/dragonfly-xyz/useful-solidity-patterns/tree/main/patterns/permit2)

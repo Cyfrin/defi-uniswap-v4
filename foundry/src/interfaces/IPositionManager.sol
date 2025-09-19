@@ -3,6 +3,10 @@ pragma solidity 0.8.30;
 
 import {PoolKey} from "../types/PoolKey.sol";
 
+// Note: positionInfo is an user defined value type
+// See here
+// https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/PositionInfoLibrary.sol
+
 interface IPositionManager {
     error NotApproved(address caller);
     error DeadlinePassed(uint256 deadline);

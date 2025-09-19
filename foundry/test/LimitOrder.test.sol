@@ -3,12 +3,11 @@ pragma solidity 0.8.30;
 
 import {Test, console} from "forge-std/Test.sol";
 import {TestHelper} from "./TestHelper.sol";
+import {TestUtil} from "./TestUtil.sol";
 import {IERC20} from "../src/interfaces/IERC20.sol";
-import {IStateView} from "../src/interfaces/IStateView.sol";
 import {IPoolManager} from "../src/interfaces/IPoolManager.sol";
 import {SafeCast} from "../src/libraries/SafeCast.sol";
 import {Hooks} from "../src/libraries/Hooks.sol";
-import {StateLibrary} from "../src/libraries/StateLibrary.sol";
 import {PoolId, PoolIdLibrary} from "../src/types/PoolId.sol";
 import {PoolKey} from "../src/types/PoolKey.sol";
 import {
@@ -19,7 +18,6 @@ import {
 } from "../src/types/BalanceDelta.sol";
 import {
     POOL_MANAGER,
-    STATE_VIEW,
     USDC,
     MIN_TICK,
     MAX_TICK,
@@ -36,7 +34,7 @@ export SALT=
 forge test --fork-url $FORK_URL --match-path test/LimitOrder.test.sol -vvv
 */
 
-contract LimitOrderTest is Test {
+contract LimitOrderTest is Test, TestUtil {
     using PoolIdLibrary for PoolKey;
     using BalanceDeltaLibrary for BalanceDelta;
     using SafeCast for int128;
@@ -44,7 +42,6 @@ contract LimitOrderTest is Test {
 
     TestHelper helper;
     IERC20 constant usdc = IERC20(USDC);
-    IStateView constant stateView = IStateView(STATE_VIEW);
     IPoolManager constant poolManager = IPoolManager(POOL_MANAGER);
     PoolKey key;
     LimitOrder hook;
@@ -384,20 +381,5 @@ contract LimitOrderTest is Test {
         vm.expectRevert();
         vm.prank(users[0]);
         hook.cancel(key, lower, zeroForOne);
-    }
-
-    function getTick(PoolId poolId) private view returns (int24 tick) {
-        (, tick,,) = StateLibrary.getSlot0(address(poolManager), poolId);
-    }
-
-    function getTickLower(int24 tick, int24 tickSpacing)
-        private
-        pure
-        returns (int24)
-    {
-        int24 compressed = tick / tickSpacing;
-        // Round towards negative infinity
-        if (tick < 0 && tick % tickSpacing != 0) compressed--;
-        return compressed * tickSpacing;
     }
 }

@@ -8,12 +8,13 @@
     - Resolve all deltas together at the end when possible
     - Use CLOSE_CURRENCY when you can't predict the final delta
   - subscriber
-  - permit2
+  - mint, increase / decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
+    - [permit2](https://github.com/Uniswap/permit2)
 - code examples
   - `modifyLiquidities`
     - `_executeActions` -> `_unlockCallback` -> `_handleAction`
+    - How to encode data?
   - `modifyLiquiditiesWithoutUnlock`
-  - mint, increase / decrease liquidity, collect fees, burn position
   - subscribe
 - TODO: application - liquidity management with auto compound?
 
@@ -21,6 +22,12 @@
   liquidity manager. maybe something fun like taking fees and putting them into a concentrated range
   Question → Liquidity manager → PositionManager or a Liquidity manager that directly interacts with PoolManager?
   ```
+
+https://docs.uniswap.org/contracts/v4/quickstart/manage-liquidity/mint-position
+
+https://docs.uniswap.org/contracts/v4/guides/position-manager
+
+https://github.com/dragonfly-xyz/useful-solidity-patterns/tree/main/patterns/permit2
 
 # universal router
 

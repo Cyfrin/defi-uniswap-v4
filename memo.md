@@ -8,6 +8,10 @@
         - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
     - `modifyLiquiditiesWithoutUnlock`
   - [ ] mint, increase / decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
+    - increase and decrease liquidity
+      - Any accumulated fees are automatically credited to your position
+        - https://github.com/Uniswap/v4-core/blob/59d3ecf53afa9264a16bba0e38f4c5d2231f80bc/src/PoolManager.sol#L170-L171
+    - [`V4Resolver`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/DeltaResolver.sol)
     - Best practices for ordering:
       - Group liquidity operations that create similar deltas (e.g., all negative or all positive)
       - Resolve all deltas together at the end when possible

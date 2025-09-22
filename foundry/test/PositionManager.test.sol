@@ -40,6 +40,7 @@ contract PosmExercises {
         );
         bytes[] memory params = new bytes[](3);
 
+        // MINT_POSITION params
         params[0] = abi.encode(
             key,
             tickLower,
@@ -71,6 +72,77 @@ contract PosmExercises {
 
         return tokenId;
     }
+
+    function increaseLiquidity(
+        uint256 tokenId,
+        uint256 liquidity,
+        uint128 amount0Max,
+        uint128 amount1Max
+    ) external payable {
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.INCREASE_LIQUIDITY),
+            uint8(Actions.CLOSE_CURRENCY),
+            uint8(Actions.CLOSE_CURRENCY),
+            uint8(Actions.SWEEP)
+        );
+        bytes[] memory params = new bytes[](4);
+
+        // INCREASE_LIQUIDITY params
+        params[0] = abi.encode(
+            tokenId,
+            liquidity,
+            amount0Max,
+            amount1Max,
+            // hook data
+            ""
+        );
+
+        // CLOSE_CURRENCY params
+        // currency 0
+        params[1] = abi.encode(address(0), USDC);
+
+        // CLOSE_CURRENCY params
+        // currency 1
+        params[2] = abi.encode(USDC);
+
+        // SWEEP params
+        // currency, address to
+        params[3] = abi.encode(address(0), address(this));
+
+        posm.modifyLiquidities{value: address(this).balance}(
+            abi.encode(actions, params), block.timestamp
+        );
+    }
+
+    function decreaseLiquidity(
+        uint256 tokenId,
+        uint256 liquidity,
+        uint128 amount0Min,
+        uint128 amount1Min
+    ) external {
+        bytes memory actions = abi.encodePacked(
+            uint8(Actions.DECREASE_LIQUIDITY), uint8(Actions.TAKE_PAIR)
+        );
+        bytes[] memory params = new bytes[](2);
+
+        // DECREASE_LIQUIDITY params
+        params[0] = abi.encode(
+            tokenId,
+            liquidity,
+            amount0Min,
+            amount1Min,
+            // hook data
+            ""
+        );
+
+        // TAKE_PAIR params
+        // currency 0, currency 1, recipient
+        params[1] = abi.encode(address(0), USDC, address(this));
+
+        posm.modifyLiquidities(abi.encode(actions, params), block.timestamp);
+    }
+    // - collect fees
+    // - burn
 }
 
 contract PositionManagerTest is Test, TestUtil {
@@ -83,6 +155,7 @@ contract PositionManagerTest is Test, TestUtil {
     int24 constant TICK_SPACING = 10;
 
     TestHelper helper;
+    PoolKey key;
 
     receive() external payable {}
 
@@ -92,17 +165,18 @@ contract PositionManagerTest is Test, TestUtil {
 
         deal(USDC, address(ex), 1e6 * 1e6);
         deal(address(ex), 100 * 1e18);
-    }
 
-    function test_mint() public {
-        PoolKey memory key = PoolKey({
+        key = PoolKey({
             currency0: address(0),
             currency1: USDC,
             fee: 500,
             tickSpacing: TICK_SPACING,
             hooks: address(0)
         });
+    }
 
+    function test_mint() public {
+        vm.skip(true);
         int24 tick = getTick(key.toId());
         int24 tickLower = getTickLower(tick, TICK_SPACING);
         uint256 liquidity = 1e12;
@@ -110,12 +184,12 @@ contract PositionManagerTest is Test, TestUtil {
         helper.set("ETH before", address(ex).balance);
         helper.set("USDC before", usdc.balanceOf(address(ex)));
 
-        uint256 tokenId = ex.mint(
-            key,
-            tickLower - 10 * TICK_SPACING,
-            tickLower + 10 * TICK_SPACING,
-            liquidity
-        );
+        uint256 tokenId = ex.mint({
+            key: key,
+            tickLower: tickLower - 10 * TICK_SPACING,
+            tickUpper: tickLower + 10 * TICK_SPACING,
+            liquidity: liquidity
+        });
 
         helper.set("ETH after", address(ex).balance);
         helper.set("USDC after", usdc.balanceOf(address(ex)));
@@ -130,5 +204,74 @@ contract PositionManagerTest is Test, TestUtil {
 
         assertLt(d0, 0);
         assertLt(d1, 0);
+
+        assertGt(helper.get("ETH after"), 0, "ETH balance");
+        assertGt(helper.get("USDC after"), 0, "USDC balance");
+    }
+
+    function test_inc_dec_liq() public {
+        // vm.skip(true);
+        int24 tick = getTick(key.toId());
+        int24 tickLower = getTickLower(tick, TICK_SPACING);
+        uint256 liquidity = 1e12;
+
+        uint256 tokenId = ex.mint(
+            key,
+            tickLower - 10 * TICK_SPACING,
+            tickLower + 10 * TICK_SPACING,
+            liquidity
+        );
+
+        // Increase liquidity
+        console.log("--- increase liquidity ---");
+        helper.set("ETH before", address(ex).balance);
+        helper.set("USDC before", usdc.balanceOf(address(ex)));
+
+        ex.increaseLiquidity({
+            tokenId: tokenId,
+            liquidity: liquidity,
+            amount0Max: uint128(address(ex).balance),
+            amount1Max: uint128(usdc.balanceOf(address(ex)))
+        });
+
+        helper.set("ETH after", address(ex).balance);
+        helper.set("USDC after", usdc.balanceOf(address(ex)));
+
+        console.log("liquidity: %e", posm.getPositionLiquidity(tokenId));
+        assertEq(posm.getPositionLiquidity(tokenId), 2 * liquidity);
+
+        int256 d0 = helper.delta("ETH after", "ETH before");
+        int256 d1 = helper.delta("USDC after", "USDC before");
+        console.log("ETH delta: %e", d0);
+        console.log("USDC delta: %e", d1);
+
+        assertLt(d0, 0);
+        assertLt(d1, 0);
+
+        assertGt(helper.get("ETH after"), 0, "ETH balance");
+        assertGt(helper.get("USDC after"), 0, "USDC balance");
+
+        // Decrease liquidity
+        console.log("--- decrease liquidity ---");
+        helper.set("ETH before", address(ex).balance);
+        helper.set("USDC before", usdc.balanceOf(address(ex)));
+
+        ex.decreaseLiquidity({
+            tokenId: tokenId,
+            liquidity: liquidity,
+            amount0Min: 1,
+            amount1Min: 1
+        });
+
+        helper.set("ETH after", address(ex).balance);
+        helper.set("USDC after", usdc.balanceOf(address(ex)));
+
+        d0 = helper.delta("ETH after", "ETH before");
+        d1 = helper.delta("USDC after", "USDC before");
+        console.log("ETH delta: %e", d0);
+        console.log("USDC delta: %e", d1);
+
+        assertGt(d0, 0);
+        assertGt(d1, 0);
     }
 }

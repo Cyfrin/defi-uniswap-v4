@@ -2,12 +2,13 @@
 pragma solidity 0.8.30;
 
 import {PoolKey} from "../types/PoolKey.sol";
+import {INotifier} from "./INotifier.sol";
 
-// Note: positionInfo is an user defined value type
+// Note: positionInfo is an user defined value type = uint256
 // See here
 // https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/PositionInfoLibrary.sol
 
-interface IPositionManager {
+interface IPositionManager is INotifier {
     error NotApproved(address caller);
     error DeadlinePassed(uint256 deadline);
     error PoolManagerMustBeLocked();

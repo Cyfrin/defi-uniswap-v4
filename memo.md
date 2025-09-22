@@ -4,6 +4,7 @@
   - [ ] Entry point
     - `modifyLiquidities`
       - `_handleAction`
+        - How to encode data?
       - Batch operations
         - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
     - `modifyLiquiditiesWithoutUnlock`
@@ -20,15 +21,18 @@
       - Use CLOSE_CURRENCY when you can't predict the final delta
   - [ ] [permit2](https://github.com/Uniswap/permit2)
     - TODO: excalidraw?
-  - [ ] subscriber
+  - [ ] subscriber - notify additional rewards
     - TODO: excalidraw - difference between v3 and v4 + subscriber approach
     - The position is initially subscribed
     - The position increases or decreases its liquidity
     - The position is transferred
     - The position is unsubscribed
+    - `Notifier`, `subscribe`
+    - `hasSubscriber` -> unsubscribe on transfer
+    - unsubscribe gas limit
 - [ ] TODO: code exercises
-  - How to encode data?
-  - subscriber - notify additional rewards
+  - mint, ..., burn
+  - subscriber
 - [ ] TODO: application - liquidity management with auto compound?
 
   ```
@@ -41,6 +45,8 @@ https://docs.uniswap.org/contracts/v4/quickstart/manage-liquidity/mint-position
 https://docs.uniswap.org/contracts/v4/guides/position-manager
 
 https://github.com/dragonfly-xyz/useful-solidity-patterns/tree/main/patterns/permit2
+
+https://docs.uniswap.org/contracts/v4/guides/subscriber
 
 # universal router
 

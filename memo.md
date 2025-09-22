@@ -1,22 +1,29 @@
 ### position manager
 
 - key concepts
-  - Batch operations
-    - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
-  - Best practices for ordering:
-    - Group liquidity operations that create similar deltas (e.g., all negative or all positive)
-    - Resolve all deltas together at the end when possible
-    - Use CLOSE_CURRENCY when you can't predict the final delta
-  - subscriber
-  - mint, increase / decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
-    - [permit2](https://github.com/Uniswap/permit2)
-- code examples
-  - `modifyLiquidities`
-    - `_executeActions` -> `_unlockCallback` -> `_handleAction`
-    - How to encode data?
-  - `modifyLiquiditiesWithoutUnlock`
-  - subscribe
-- TODO: application - liquidity management with auto compound?
+  - [ ] Entry point
+    - `modifyLiquidities`
+      - `_handleAction`
+      - Batch operations
+        - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
+    - `modifyLiquiditiesWithoutUnlock`
+  - [ ] mint, increase / decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
+    - Best practices for ordering:
+      - Group liquidity operations that create similar deltas (e.g., all negative or all positive)
+      - Resolve all deltas together at the end when possible
+      - Use CLOSE_CURRENCY when you can't predict the final delta
+  - [ ] [permit2](https://github.com/Uniswap/permit2)
+    - TODO: excalidraw?
+  - [ ] subscriber
+    - TODO: excalidraw - difference between v3 and v4 + subscriber approach
+    - The position is initially subscribed
+    - The position increases or decreases its liquidity
+    - The position is transferred
+    - The position is unsubscribed
+- [ ] TODO: code exercises
+  - How to encode data?
+  - subscriber - notify additional rewards
+- [ ] TODO: application - liquidity management with auto compound?
 
   ```
   liquidity manager. maybe something fun like taking fees and putting them into a concentrated range

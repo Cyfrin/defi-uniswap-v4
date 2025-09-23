@@ -1,14 +1,16 @@
 ### position manager
 
 - key concepts
+  - [ ] [`PositionManager`](https://github.com/Uniswap/v4-periphery/blob/main/src/PositionManager.sol)
   - [ ] Entry point
-    - `modifyLiquidities`
-      - `_handleAction`
+    - [`modifyLiquidities`](https://github.com/Uniswap/v4-periphery/blob/60cd93803ac2b7fa65fd6cd351fd5fd4cc8c9db5/src/PositionManager.sol#L172-L179)
+      - `_executeActions` -> `_handleAction`
+      - [`BaseActionsRouter`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/BaseActionsRouter.sol)
         - How to encode data?
       - Batch operations
         - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
     - `modifyLiquiditiesWithoutUnlock`
-  - [ ] mint, increase / decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
+  - [ ] mint, increase liquidity, decrease liquidity, collect fees, burn position, sweep, settle_pair, etc
     - increase and decrease liquidity
       - Any accumulated fees are automatically credited to your position
         - https://github.com/Uniswap/v4-core/blob/59d3ecf53afa9264a16bba0e38f4c5d2231f80bc/src/PoolManager.sol#L170-L171
@@ -19,8 +21,11 @@
       - Group liquidity operations that create similar deltas (e.g., all negative or all positive)
       - Resolve all deltas together at the end when possible
       - Use CLOSE_CURRENCY when you can't predict the final delta
-  - [ ] [permit2](https://github.com/Uniswap/permit2)
-    - TODO: excalidraw?
+  - [ ] [`permit2`](./notes/permit2.png)
+    - [`permit2`](https://github.com/Uniswap/permit2)
+    - [`Permit2Forwarder.sol`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Permit2Forwarder.sol)
+    - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
+    - `_pay` -> `permit2.transferFrom`
   - [ ] subscriber - notify additional rewards
     - TODO: excalidraw - difference between v3 and v4 + subscriber approach
     - The position is initially subscribed

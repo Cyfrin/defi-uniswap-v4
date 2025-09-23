@@ -12,6 +12,7 @@ import {POSITION_MANAGER, USDC, PERMIT2} from "../src/Constants.sol";
 
 import {ISubscriber} from "../src/interfaces/ISubscriber.sol";
 
+// TODO: non-transferrable token
 contract Subscriber is ISubscriber {
     // PositionManager
     address public immutable posm;

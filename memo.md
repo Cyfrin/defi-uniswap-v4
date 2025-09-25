@@ -26,15 +26,10 @@
     - [`Permit2Forwarder.sol`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Permit2Forwarder.sol)
     - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
     - `_pay` -> `permit2.transferFrom`
-  - [ ] subscriber - notify additional rewards
-    - TODO: excalidraw - difference between v3 and v4 + subscriber approach
-    - The position is initially subscribed
-    - The position increases or decreases its liquidity
-    - The position is transferred
-    - The position is unsubscribed
-    - `Notifier`, `subscribe`
-    - `hasSubscriber` -> unsubscribe on transfer
-    - unsubscribe gas limit
+  - [ ] [subscriber](./notes/subscribe.png)
+    - [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
+    - `hasSubscriber`
+    - unsubscribe -> gas limit
 - [ ] TODO: code exercises
   - mint, ..., burn
   - subscriber

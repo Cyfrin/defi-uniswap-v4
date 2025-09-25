@@ -27,7 +27,7 @@
     - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
     - `_pay` -> `permit2.transferFrom`
   - [ ] [subscriber](./notes/subscribe.png)
-    - [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
+  - [ ] [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
     - `hasSubscriber`
     - unsubscribe -> gas limit
 - [ ] TODO: code exercises

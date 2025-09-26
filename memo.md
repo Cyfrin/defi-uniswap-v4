@@ -1,37 +1,5 @@
 ### position manager
 
-- key concepts
-  - [x] [`PositionManager`](https://github.com/Uniswap/v4-periphery/blob/main/src/PositionManager.sol)
-  - [x] Entry point
-    - [`modifyLiquidities`](https://github.com/Uniswap/v4-periphery/blob/60cd93803ac2b7fa65fd6cd351fd5fd4cc8c9db5/src/PositionManager.sol#L172-L179)
-    - [`BaseActionsRouter`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/BaseActionsRouter.sol)
-    - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
-  - Mint, burn, increase / decrease liquidty and collecct fees
-    - [`V4Resolver`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/DeltaResolver.sol)
-  - [x] [`permit2`](./notes/permit2.png)
-    - [`permit2`](https://github.com/Uniswap/permit2)
-    - [`Permit2Forwarder.sol`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Permit2Forwarder.sol)
-    - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
-  - [ ] [subscriber](./notes/subscribe.png)
-  - [ ] [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
-- [ ] TODO: code exercises
-  - mint, ..., burn
-  - subscriber
-- [ ] TODO: application - liquidity management with auto compound?
-
-  ```
-  liquidity manager. maybe something fun like taking fees and putting them into a concentrated range
-  Question → Liquidity manager → PositionManager or a Liquidity manager that directly interacts with PoolManager?
-  ```
-
-https://docs.uniswap.org/contracts/v4/quickstart/manage-liquidity/mint-position
-
-https://docs.uniswap.org/contracts/v4/guides/position-manager
-
-https://github.com/dragonfly-xyz/useful-solidity-patterns/tree/main/patterns/permit2
-
-https://docs.uniswap.org/contracts/v4/guides/subscriber
-
 # universal router
 
 - Universal router vs v2 vs v3 router

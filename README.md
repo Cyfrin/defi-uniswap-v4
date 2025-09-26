@@ -83,6 +83,32 @@ Please refer to this for an in-depth explanation of the content:
   - [Review ticks and liquidity](https://www.desmos.com/calculator/x31s77joxw)
   - [Algorithm](./notes/limit_order.png)
 
+# Position Manager
+
+- key concepts
+  - [`PositionManager`](https://github.com/Uniswap/v4-periphery/blob/main/src/PositionManager.sol)
+  - Entry point
+    - [`modifyLiquidities`](https://github.com/Uniswap/v4-periphery/blob/60cd93803ac2b7fa65fd6cd351fd5fd4cc8c9db5/src/PositionManager.sol#L172-L179)
+    - [`BaseActionsRouter`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/BaseActionsRouter.sol)
+    - [`Actions`](https://github.com/Uniswap/v4-periphery/blob/main/src/libraries/Actions.sol)
+  - Mint, burn, increase / decrease liquidty and collecct fees
+    - [`V4Resolver`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/DeltaResolver.sol)
+  - [`permit2`](./notes/permit2.png)
+    - [`permit2`](https://github.com/Uniswap/permit2)
+    - [`Permit2Forwarder.sol`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Permit2Forwarder.sol)
+    - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
+  - [Subscriber](./notes/subscribe.png)
+    - [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
+- [ ] TODO: code exercises
+  - mint, ..., burn
+  - subscriber
+- [ ] TODO: application - liquidity management with auto compound?
+
+  ```
+  liquidity manager. maybe something fun like taking fees and putting them into a concentrated range
+  Question → Liquidity manager → PositionManager or a Liquidity manager that directly interacts with PoolManager?
+  ```
+
 # Resources
 
 - [Uniswap V4](https://v4.uniswap.org/)

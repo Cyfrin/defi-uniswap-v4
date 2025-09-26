@@ -40,4 +40,7 @@ interface IPositionManager is INotifier {
         returns (uint256 positionInfo);
 
     function poolKeys(bytes25 poolId) external view returns (PoolKey memory);
+
+    // ERC721
+    function ownerOf(uint256 id) external view returns (address owner);
 }

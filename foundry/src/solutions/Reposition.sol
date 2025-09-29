@@ -42,9 +42,6 @@ contract Reposition {
         int24 posTickLower = pos.tickLower();
         int24 posTickUpper = pos.tickUpper();
 
-        // Get current tick
-        (, int24 tick,,) = stateView.getSlot0(poolId);
-
         // Reposition
         bytes memory actions = abi.encodePacked(
             uint8(Actions.BURN_POSITION),

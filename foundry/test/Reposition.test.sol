@@ -30,7 +30,6 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
         int24 tick = getTick(key.toId());
         tickLower = getTickLower(tick, TICK_SPACING);
 
-        // Mint
         tokenId = mint({
             tickLower: tickLower - 10 * TICK_SPACING,
             tickUpper: tickLower + 10 * TICK_SPACING,
@@ -47,21 +46,28 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
             tickUpper: tickLower + 2 * TICK_SPACING
         });
 
-        (address owner, , int24 posTickLower, int24 posTickUpper, uint128 liq) = getPositionInfo(newTokenId);
+        (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
+            getPositionInfo(newTokenId);
 
-        assertLe(L, liq);
+        assertGe(liq, L);
         assertEq(owner, address(this));
         assertEq(posTickLower, tickLower - 2 * TICK_SPACING);
         assertEq(posTickUpper, tickLower + 2 * TICK_SPACING);
     }
 
-    /*
     function test_reposition_lower() public {
         uint256 newTokenId = ex.reposition({
             tokenId: tokenId,
             tickLower: tickLower - 20 * TICK_SPACING,
             tickUpper: tickLower - 10 * TICK_SPACING
         });
+
+        (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
+            getPositionInfo(newTokenId);
+
+        assertEq(owner, address(this));
+        assertEq(posTickLower, tickLower - 20 * TICK_SPACING);
+        assertEq(posTickUpper, tickLower - 10 * TICK_SPACING);
     }
 
     function test_reposition_upper() public {
@@ -70,6 +76,12 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
             tickLower: tickLower + 10 * TICK_SPACING,
             tickUpper: tickLower + 20 * TICK_SPACING
         });
+
+        (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
+            getPositionInfo(newTokenId);
+
+        assertEq(owner, address(this));
+        assertEq(posTickLower, tickLower + 10 * TICK_SPACING);
+        assertEq(posTickUpper, tickLower + 20 * TICK_SPACING);
     }
-    */
 }

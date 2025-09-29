@@ -53,16 +53,13 @@ contract Reposition {
         );
         bytes[] memory params = new bytes[](3);
 
-        uint128 amount0Min = 0;
-        uint128 amount1Min = 0;
-        uint256 amount0Max = type(uint128).max;
-        uint256 amount1Max = type(uint128).max;
-
         // BURN_POSITION params
         params[0] = abi.encode(
             tokenId,
-            amount0Min,
-            amount1Min,
+            // amount0Min
+            0,
+            // amount1Min
+            0,
             // hook data
             ""
         );
@@ -72,8 +69,10 @@ contract Reposition {
             key,
             tickLower,
             tickUpper,
-            amount0Max,
-            amount1Max,
+            // amount0Max
+            type(uint128).max,
+            // amount1Max
+            type(uint128).max,
             // owner
             owner,
             // hook data

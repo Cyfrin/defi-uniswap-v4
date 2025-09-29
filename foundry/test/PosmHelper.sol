@@ -6,13 +6,19 @@ import {IPermit2} from "../src/interfaces/IPermit2.sol";
 import {IPositionManager} from "../src/interfaces/IPositionManager.sol";
 import {PoolKey} from "../src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "../src/types/PoolId.sol";
+import {
+    PositionInfo,
+    PositionInfoLibrary
+} from "../src/libraries/PositionInfoLibrary.sol";
 import {POSITION_MANAGER, USDC, PERMIT2} from "../src/Constants.sol";
 import {Actions} from "../src/libraries/Actions.sol";
 
 contract PosmHelper {
     using PoolIdLibrary for PoolKey;
+    using PositionInfoLibrary for PositionInfo;
 
-    IPositionManager constant posm = IPositionManager(POSITION_MANAGER);
+    IPositionManager internal constant posm = IPositionManager(POSITION_MANAGER);
+    IERC20 internal constant usdc = IERC20(USDC);
 
     PoolKey internal key;
     bytes32 internal poolId;
@@ -173,5 +179,29 @@ contract PosmHelper {
         params[1] = abi.encode(address(0), USDC, address(this));
 
         posm.modifyLiquidities(abi.encode(actions, params), block.timestamp);
+    }
+
+    function getPositionInfo(uint256 tokenId)
+        public
+        view
+        returns (
+            address owner,
+            PoolKey memory key,
+            int24 tickLower,
+            int24 tickUpper,
+            uint128 liquidity
+        )
+    {
+        owner = posm.ownerOf(tokenId);
+
+        uint256 p;
+        (key, p) = posm.getPoolAndPositionInfo(tokenId);
+        PositionInfo pos = PositionInfo.wrap(p);
+
+        // Get position ticks
+        tickLower = pos.tickLower();
+        tickUpper = pos.tickUpper();
+
+        liquidity = posm.getPositionLiquidity(tokenId);
     }
 }

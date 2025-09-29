@@ -5,7 +5,6 @@ import {Test, console} from "forge-std/Test.sol";
 import {TestHelper} from "./TestHelper.sol";
 import {TestUtil} from "./TestUtil.sol";
 import {PosmHelper} from "./PosmHelper.sol";
-import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IPositionManager} from "../src/interfaces/IPositionManager.sol";
 import {PoolKey} from "../src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "../src/types/PoolId.sol";
@@ -14,8 +13,6 @@ import {Subscriber} from "@exercises/Subscriber.sol";
 
 contract SubscriberTest is Test, TestUtil, PosmHelper {
     using PoolIdLibrary for PoolKey;
-
-    IERC20 constant usdc = IERC20(USDC);
 
     Subscriber sub;
     TestHelper helper;

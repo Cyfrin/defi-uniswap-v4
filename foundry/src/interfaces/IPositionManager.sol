@@ -43,4 +43,5 @@ interface IPositionManager is INotifier {
 
     // ERC721
     function ownerOf(uint256 id) external view returns (address owner);
+    function approve(address spender, uint256 id) external;
 }

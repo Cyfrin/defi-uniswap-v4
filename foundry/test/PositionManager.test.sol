@@ -8,7 +8,7 @@ import {IERC20} from "../src/interfaces/IERC20.sol";
 import {IPositionManager} from "../src/interfaces/IPositionManager.sol";
 import {PoolKey} from "../src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "../src/types/PoolId.sol";
-import {POSITION_MANAGER, USDC, PERMIT2} from "../src/Constants.sol";
+import {POSITION_MANAGER, USDC} from "../src/Constants.sol";
 import {PosmExercises} from "@exercises/Posm.sol";
 
 contract PositionManagerTest is Test, TestUtil {

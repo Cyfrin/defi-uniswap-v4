@@ -17,7 +17,7 @@ function flash(address currency, uint256 amount) external {
 - Unlock the `PoolManager` contract by calling `PoolManager.unlock`
 - ABI encode or store the inputs (`currency` and `amount`) in storage.
 
-## Task 1 - Unlock callback
+## Task 2 - Unlock callback
 
 ```solidity
 function unlockCallback(bytes calldata data)

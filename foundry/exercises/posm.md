@@ -6,37 +6,50 @@ The starter code for this exercise is provided in [`foundry/src/exercises/Posm.s
 
 Solution is in [`foundry/src/solutions/Flash.sol`](https://github.com/Cyfrin/defi-uniswap-v4/blob/main/foundry/src/solutions/Flash.sol)
 
-## Task 1 - Initiate a flash loan
+## Task 1 - Increase liquidity
 
 ```solidity
-function flash(address currency, uint256 amount) external {
+function increaseLiquidity(
+    uint256 tokenId,
+    uint256 liquidity,
+    uint128 amount0Max,
+    uint128 amount1Max
+) external payable {
     // Write your code here
 }
 ```
 
-- Unlock the `PoolManager` contract by calling `PoolManager.unlock`
-- ABI encode or store the inputs (`currency` and `amount`) in storage.
+Complete the function to increase liquidity for the position identified by `tokenId`.
 
-## Task 1 - Unlock callback
+## Task 2 - Decrease liquidity
 
 ```solidity
-function unlockCallback(bytes calldata data)
+function decreaseLiquidity(
+    uint256 tokenId,
+    uint256 liquidity,
+    uint128 amount0Min,
+    uint128 amount1Min
+) external {
+    // Write your code here
+}
+```
+
+Complete the function to decrease liquidity for the position identified by `tokenId`.
+
+## Task 3 - Burn
+
+```solidity
+function burn(uint256 tokenId, uint128 amount0Min, uint128 amount1Min)
     external
-    onlyPoolManager
-    returns (bytes memory)
 {
     // Write your code here
-    return "";
 }
 ```
 
-- Implement the `unlockCallback`
-- Take out flash loan of `currency` for the `amount` specified when the function `flash` was called.
-- Immediately after borrowing the `currency` from the `PoolManager` contract, call `tester.call("")`.
-  This external call will check that the flash loan was taken out correctly.
+Complete the function to burn the position identified by `tokenId`.
 
 ## Test
 
 ```shell
-forge test --fork-url $FORK_URL --match-path test/Flash.test.sol -vvv
+forge test --fork-url $FORK_URL --match-path test/Posm.test.sol -vvv
 ```

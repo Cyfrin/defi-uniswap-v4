@@ -97,6 +97,7 @@ Please refer to this for an in-depth explanation of the content:
     - [`permit2`](https://github.com/Uniswap/permit2)
     - [`Permit2Forwarder.sol`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Permit2Forwarder.sol)
     - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
+- [Exercise - position manager](./foundry/exercises/posm.md)
   - [Subscriber](./notes/subscribe.png)
     - [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
 - [Exercise - subscriber](./foundry/exercises/subscriber.md)

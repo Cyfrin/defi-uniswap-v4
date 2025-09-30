@@ -186,7 +186,7 @@ contract PosmHelper {
         view
         returns (
             address owner,
-            PoolKey memory key,
+            PoolKey memory poolKey,
             int24 tickLower,
             int24 tickUpper,
             uint128 liquidity
@@ -195,7 +195,7 @@ contract PosmHelper {
         owner = posm.ownerOf(tokenId);
 
         uint256 p;
-        (key, p) = posm.getPoolAndPositionInfo(tokenId);
+        (poolKey, p) = posm.getPoolAndPositionInfo(tokenId);
         PositionInfo pos = PositionInfo.wrap(p);
 
         // Get position ticks

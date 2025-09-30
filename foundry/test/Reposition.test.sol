@@ -40,10 +40,13 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
     }
 
     function test_reposition_in_range() public {
+        int24 lower = tickLower - 2 * TICK_SPACING;
+        int24 upper = tickLower + 2 * TICK_SPACING;
+
         uint256 newTokenId = ex.reposition({
             tokenId: tokenId,
-            tickLower: tickLower - 2 * TICK_SPACING,
-            tickUpper: tickLower + 2 * TICK_SPACING
+            tickLower: lower,
+            tickUpper: upper
         });
 
         (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
@@ -51,37 +54,45 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
 
         assertGe(liq, L);
         assertEq(owner, address(this));
-        assertEq(posTickLower, tickLower - 2 * TICK_SPACING);
-        assertEq(posTickUpper, tickLower + 2 * TICK_SPACING);
+        assertEq(posTickLower, lower);
+        assertEq(posTickUpper, upper);
     }
 
     function test_reposition_lower() public {
+        int24 lower = tickLower - 20 * TICK_SPACING;
+        int24 upper = tickLower - 10 * TICK_SPACING;
+
         uint256 newTokenId = ex.reposition({
             tokenId: tokenId,
-            tickLower: tickLower - 20 * TICK_SPACING,
-            tickUpper: tickLower - 10 * TICK_SPACING
+            tickLower: lower,
+            tickUpper: upper
         });
 
         (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
             getPositionInfo(newTokenId);
 
+        assertGt(liq, 0);
         assertEq(owner, address(this));
-        assertEq(posTickLower, tickLower - 20 * TICK_SPACING);
-        assertEq(posTickUpper, tickLower - 10 * TICK_SPACING);
+        assertEq(posTickLower, lower);
+        assertEq(posTickUpper, upper);
     }
 
     function test_reposition_upper() public {
+        int24 lower = tickLower + 10 * TICK_SPACING;
+        int24 upper = tickLower + 20 * TICK_SPACING;
+
         uint256 newTokenId = ex.reposition({
             tokenId: tokenId,
-            tickLower: tickLower + 10 * TICK_SPACING,
-            tickUpper: tickLower + 20 * TICK_SPACING
+            tickLower: lower,
+            tickUpper: upper
         });
 
         (address owner,, int24 posTickLower, int24 posTickUpper, uint128 liq) =
             getPositionInfo(newTokenId);
 
+        assertGt(liq, 0);
         assertEq(owner, address(this));
-        assertEq(posTickLower, tickLower + 10 * TICK_SPACING);
-        assertEq(posTickUpper, tickLower + 20 * TICK_SPACING);
+        assertEq(posTickLower, lower);
+        assertEq(posTickUpper, upper);
     }
 }

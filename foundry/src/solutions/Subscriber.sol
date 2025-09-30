@@ -78,7 +78,6 @@ contract Subscriber is ISubscriber, Token {
         int256 feesAccrued
     ) external onlyPositionManager {
         bytes32 poolId = poolIds[tokenId];
-        address owner = ownerOf[tokenId];
         // NOTE: Position liquidity may be > balanceOf[poolId][owner] since positions accumulate fees
         _burn(poolId, owner, balanceOf[poolId][owner]);
         delete poolIds[tokenId];

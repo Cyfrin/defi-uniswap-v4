@@ -34,13 +34,7 @@ contract Reposition {
         address owner = posm.ownerOf(tokenId);
 
         // Get pool key
-        (PoolKey memory key, uint256 p) = posm.getPoolAndPositionInfo(tokenId);
-        PoolId poolId = key.toId();
-        PositionInfo pos = PositionInfo.wrap(p);
-
-        // Get position ticks
-        int24 posTickLower = pos.tickLower();
-        int24 posTickUpper = pos.tickUpper();
+        (PoolKey memory key,) = posm.getPoolAndPositionInfo(tokenId);
 
         // Reposition
         bytes memory actions = abi.encodePacked(

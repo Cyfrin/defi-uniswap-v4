@@ -85,7 +85,7 @@ Please refer to this for an in-depth explanation of the content:
 
 # Position Manager
 
-- key concepts
+- Key concepts
   - [`PositionManager`](https://github.com/Uniswap/v4-periphery/blob/main/src/PositionManager.sol)
   - Entry point
     - [`modifyLiquidities`](https://github.com/Uniswap/v4-periphery/blob/60cd93803ac2b7fa65fd6cd351fd5fd4cc8c9db5/src/PositionManager.sol#L172-L179)
@@ -99,15 +99,8 @@ Please refer to this for an in-depth explanation of the content:
     - [`Multicall_v4`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Multicall_v4.sol)
   - [Subscriber](./notes/subscribe.png)
     - [`Notifier`](https://github.com/Uniswap/v4-periphery/blob/main/src/base/Notifier.sol)
-- [ ] TODO: code exercises
-  - mint, ..., burn
-  - subscriber
-- [ ] TODO: application - liquidity management with auto compound?
-
-  ```
-  liquidity manager. maybe something fun like taking fees and putting them into a concentrated range
-  Question → Liquidity manager → PositionManager or a Liquidity manager that directly interacts with PoolManager?
-  ```
+- [Exercise - subscriber](./foundry/exercises/subscriber.md)
+- [Application - reposition liquidity](./foundry/exercises/reposition.md)
 
 # Resources
 

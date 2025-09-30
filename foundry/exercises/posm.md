@@ -4,7 +4,7 @@ In this exercise, you'll learn how to use the [`PositionManager`](https://github
 
 The starter code for this exercise is provided in [`foundry/src/exercises/Posm.sol`](https://github.com/Cyfrin/defi-uniswap-v4/blob/main/foundry/src/exercises/Posm.sol)
 
-Solution is in [`foundry/src/solutions/Flash.sol`](https://github.com/Cyfrin/defi-uniswap-v4/blob/main/foundry/src/solutions/Flash.sol)
+Solution is in [`foundry/src/solutions/Posm.sol`](https://github.com/Cyfrin/defi-uniswap-v4/blob/main/foundry/src/solutions/Posm.sol)
 
 ## Task 1 - Increase liquidity
 

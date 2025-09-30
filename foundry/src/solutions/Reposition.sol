@@ -2,7 +2,6 @@
 pragma solidity 0.8.30;
 
 import {IPositionManager} from "../interfaces/IPositionManager.sol";
-import {IStateView} from "../interfaces/IStateView.sol";
 import {PoolKey} from "../types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "../types/PoolId.sol";
 import {
@@ -16,11 +15,9 @@ contract Reposition {
     using PositionInfoLibrary for PositionInfo;
 
     IPositionManager public immutable posm;
-    IStateView public immutable stateView;
 
-    constructor(address _posm, address _stateView) {
+    constructor(address _posm) {
         posm = IPositionManager(_posm);
-        stateView = IStateView(_stateView);
     }
 
     receive() external payable {}

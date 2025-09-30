@@ -8,7 +8,7 @@ import {PosmHelper} from "./PosmHelper.sol";
 import {IPositionManager} from "../src/interfaces/IPositionManager.sol";
 import {PoolKey} from "../src/types/PoolKey.sol";
 import {PoolId, PoolIdLibrary} from "../src/types/PoolId.sol";
-import {POSITION_MANAGER, USDC, STATE_VIEW} from "../src/Constants.sol";
+import {POSITION_MANAGER, USDC} from "../src/Constants.sol";
 import {Reposition} from "@exercises/Reposition.sol";
 
 contract RepositionTest is Test, TestUtil, PosmHelper {
@@ -22,7 +22,7 @@ contract RepositionTest is Test, TestUtil, PosmHelper {
 
     function setUp() public {
         helper = new TestHelper();
-        ex = new Reposition(POSITION_MANAGER, STATE_VIEW);
+        ex = new Reposition(POSITION_MANAGER);
 
         deal(USDC, address(this), 1e6 * 1e6);
         deal(address(this), 100 * 1e18);

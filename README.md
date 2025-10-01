@@ -113,6 +113,7 @@ Please refer to this for an in-depth explanation of the content:
 - [GitHub - universal-router](https://github.com/Uniswap/universal-router)
 - [GitHub - v4-template](https://github.com/uniswapfoundation/v4-template)
 - [GitHub - permit2](https://github.com/Uniswap/permit2)
+- [GitHub - mixed-quoter](https://github.com/Uniswap/mixed-quoter)
 - [YouTube - Uniswap v4 on Unichain](https://www.youtube.com/watch?v=ZisqLqbakfM)
 - [Cyfrin - Uniswap V4 Swap: Deep Dive Into Execution and Accounting](https://www.cyfrin.io/blog/uniswap-v4-swap-deep-dive-into-execution-and-accounting)
 - [PoolManager - storage layout](https://www.evm.codes/contract?address=0x000000000004444c5dc75cb358380d2e3de08a90)

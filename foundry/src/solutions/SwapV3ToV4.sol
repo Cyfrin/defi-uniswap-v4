@@ -39,7 +39,7 @@ contract SwapV3ToV4 {
         );
         */
 
-       // TODO: fix
+        // TODO: fix
         address v3TokenOut =
             v3TokenIn == key.currency0 ? key.currency1 : key.currency0;
 
@@ -56,7 +56,7 @@ contract SwapV3ToV4 {
         // V3_SWAP_EXACT_IN
         inputs[0] = abi.encode(
             // address recipient
-            POOL_MANAGER,
+            address(router),
             // uint256 amountIn
             ActionConstants.CONTRACT_BALANCE,
             // uint256 amountOutMin
@@ -70,15 +70,15 @@ contract SwapV3ToV4 {
         // TODO: unwrap WETH?
         // V4 actions and params
         bytes memory actions = abi.encodePacked(
-            uint8(Actions.SETTLE_ALL),
-            // uint8(Actions.SWAP_EXACT_IN_SINGLE),
+            uint8(Actions.SETTLE),
+            uint8(Actions.SWAP_EXACT_IN_SINGLE),
             uint8(Actions.TAKE_ALL)
         );
-        bytes[] memory params = new bytes[](2);
-        // SETTLE_ALL (currency, pool manager's balance)
-        params[0] =
-            abi.encode(v3TokenOut, uint256(ActionConstants.CONTRACT_BALANCE));
-        /*
+        bytes[] memory params = new bytes[](3);
+        // SETTLE (currency, amount, payer is user)
+        params[0] = abi.encode(
+            v3TokenOut, uint256(ActionConstants.CONTRACT_BALANCE), false
+        );
         // SWAP_EXACT_IN_SINGLE
         params[1] = abi.encode(
             IV4Router.ExactInputSingleParams({
@@ -91,13 +91,12 @@ contract SwapV3ToV4 {
                 hookData: bytes("")
             })
         );
-        */
         // TAKE_ALL (currency, min amount)
-        v3TokenIn = v3TokenOut;
-        params[1] = abi.encode(v3TokenIn, uint256(v4AmountOutMin));
+        v3TokenIn = address(0);
+        params[2] = abi.encode(v3TokenIn, uint256(v4AmountOutMin));
 
-        // Universal router input
-        inputs[0] = abi.encode(actions, params);
+        // V4_SWAP
+        inputs[1] = abi.encode(actions, params);
 
         router.execute(commands, inputs, block.timestamp);
 

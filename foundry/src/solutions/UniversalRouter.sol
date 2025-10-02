@@ -2,26 +2,19 @@
 pragma solidity 0.8.30;
 
 import {IERC20} from "../interfaces/IERC20.sol";
+import {IPermit2} from "../interfaces/IPermit2.sol";
 import {IUniversalRouter} from "../interfaces/IUniversalRouter.sol";
 import {IV4Router} from "../interfaces/IV4Router.sol";
-import {UNIVERSAL_ROUTER} from "../Constants.sol";
 import {Actions} from "../libraries/Actions.sol";
 import {Commands} from "../libraries/Commands.sol";
 import {PoolKey} from "../types/PoolKey.sol";
+import {UNIVERSAL_ROUTER, PERMIT2} from "../Constants.sol";
 
 contract UniversalRouterExercises {
     IUniversalRouter constant router = IUniversalRouter(UNIVERSAL_ROUTER);
+    IPermit2 constant permit2 = IPermit2(PERMIT2);
 
     receive() external payable {}
-
-    function approveTokenWithPermit2(
-        address token,
-        uint160 amount,
-        uint48 expiration
-    ) external {
-        IERC20(token).approve(address(permit2), type(uint256).max);
-        // permit2.approve(token, address(router), amount, expiration);
-    }
 
     function swap(
         PoolKey calldata key,
@@ -29,6 +22,16 @@ contract UniversalRouterExercises {
         uint128 amountOutMin,
         bool zeroForOne
     ) external payable {
+        (address currencyIn, address currencyOut) = zeroForOne
+            ? (key.currency0, key.currency1)
+            : (key.currency1, key.currency0);
+
+        transferFrom(currencyIn, msg.sender, uint256(amountIn));
+
+        if (currencyIn != address(0)) {
+            approve(currencyIn, uint160(amountIn), uint48(block.timestamp));
+        }
+
         bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
         bytes[] memory inputs = new bytes[](1);
 
@@ -49,9 +52,6 @@ contract UniversalRouterExercises {
                 hookData: bytes("")
             })
         );
-        (address currencyIn, address currencyOut) = zeroForOne
-            ? (key.currency0, key.currency1)
-            : (key.currency1, key.currency0);
         // SETTLE_ALL (currency, max amount)
         params[1] = abi.encode(currencyIn, uint256(amountIn));
         // TAKE_ALL (currency, min amount)
@@ -60,15 +60,28 @@ contract UniversalRouterExercises {
         // Universal router input
         inputs[0] = abi.encode(actions, params);
 
-        // TODO: token permit?
-
         router.execute{value: msg.value}(commands, inputs, block.timestamp);
 
         withdraw(key.currency0, msg.sender);
         withdraw(key.currency1, msg.sender);
     }
 
-    function withdraw(address currency, address receiver) public {
+    function approve(address token, uint160 amount, uint48 expiration)
+        private
+    {
+        IERC20(token).approve(address(permit2), uint256(amount));
+        permit2.approve(token, address(router), amount, expiration);
+    }
+
+    function transferFrom(address currency, address src, uint256 amt) private {
+        if (currency == address(0)) {
+            require(msg.value == amt, "not enough ETH sent");
+        } else {
+            IERC20(currency).transferFrom(src, address(this), amt);
+        }
+    }
+
+    function withdraw(address currency, address receiver) private {
         if (currency == address(0)) {
             uint256 bal = address(this).balance;
             if (bal > 0) {

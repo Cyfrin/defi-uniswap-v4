@@ -34,21 +34,18 @@ contract UniversalRouterTest is Test, TestHelper {
         });
     }
 
-    function test_swap() public {
-        /*
+    function test_swap_zero_for_one() public {
         // Swap ETH to USDC
         helper.set("Before swap USDC", usdc.balanceOf(address(this)));
         helper.set("Before swap ETH", address(this).balance);
 
         uint128 amountIn = 1e18;
-        swap.swap{value: uint256(amountIn)}(
-            Swap.SwapExactInputSingleHop({
-                poolKey: poolKey,
-                zeroForOne: true,
-                amountIn: amountIn,
-                amountOutMin: 1
-            })
-        );
+        ex.swap{value: uint256(amountIn)}({
+            key: poolKey,
+            amountIn: amountIn,
+            amountOutMin: 1,
+            zeroForOne: true
+        });
 
         helper.set("After swap USDC", usdc.balanceOf(address(this)));
         helper.set("After swap ETH", address(this).balance);
@@ -61,6 +58,31 @@ contract UniversalRouterTest is Test, TestHelper {
 
         assertLt(d0, 0, "ETH delta");
         assertGt(d1, 0, "USDC delta");
-        */
+    }
+
+    function test_swap_one_for_zero() public {
+        // Swap USDC to ETH
+        helper.set("Before swap USDC", usdc.balanceOf(address(this)));
+        helper.set("Before swap ETH", address(this).balance);
+
+        uint128 amountIn = 1000 * 1e6;
+        ex.swap{value: uint256(amountIn)}({
+            key: poolKey,
+            amountIn: amountIn,
+            amountOutMin: 1,
+            zeroForOne: false
+        });
+
+        helper.set("After swap USDC", usdc.balanceOf(address(this)));
+        helper.set("After swap ETH", address(this).balance);
+
+        int256 d0 = helper.delta("After swap ETH", "Before swap ETH");
+        int256 d1 = helper.delta("After swap USDC", "Before swap USDC");
+
+        console.log("ETH delta: %e", d0);
+        console.log("USDC delta: %e", d1);
+
+        assertGt(d0, 0, "ETH delta");
+        assertLt(d1, 0, "USDC delta");
     }
 }

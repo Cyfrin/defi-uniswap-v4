@@ -32,15 +32,17 @@
   - [`V4SwapRouter`](https://github.com/Uniswap/universal-router/blob/main/contracts/modules/uniswap/v4/V4SwapRouter.sol)
     - [`payOrPermit2Transfer`](https://github.com/Uniswap/universal-router/blob/3663f6db6e2fe121753cd2d899699c2dc75dca86/contracts/modules/Permit2Payments.sol#L42-L45)
 
-- [ ] Exercises - execute commands
-- Multihop
+- [x] Exercises - execute commands
+- V3 to V4 Multi hop swap
   - [ ] TODO: explanation
+        -> Swap on V3
+        -> Send to V4 PoolManager
+        -> Call `SETTLE` with `ActionConstants.CONTRACT_BALANCE`
+        -> Call `SWAP` with amount = `ActionConstants.OPEN_DELTA`
+        -> Call `TAKE_ALL`
+
   - [ ] TODO: Exercise
-  - How swap outputs from V3 feed into UniversalRouter.
-  - Flow: UniversalRouter → PoolManager (SETTLE, ActionConstants.CONTRACT_BALANCE).
-  - UniversalRouter calls v4.swap(amountIn = OPEN_DELTA).
-  - UniversalRouter calls TAKE_ALL to the wallet address.
-  - Visualizing multihop execution from start to finish.
+
 - quoting
   - [ ] TODO: explanation
   - [ ] TODO: example or exercise

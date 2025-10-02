@@ -124,3 +124,4 @@ Please refer to this for an in-depth explanation of the content:
 - [`BaseHook`](https://github.com/Uniswap/v4-periphery/blob/main/src/utils/BaseHook.sol)
 - [`LimitOrder`](https://github.com/Uniswap/v4-periphery/blob/example-contracts/contracts/hooks/examples/LimitOrder.sol)
 - [Permit2](https://github.com/dragonfly-xyz/useful-solidity-patterns/tree/main/patterns/permit2)
+- [How to swap from V3 to V4 using `UniversalRouter`](https://x.com/saucepoint/status/1950588162578817460)

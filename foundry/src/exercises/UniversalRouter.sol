@@ -22,50 +22,15 @@ contract UniversalRouterExercises {
         uint128 amountOutMin,
         bool zeroForOne
     ) external payable {
-        (address currencyIn, address currencyOut) = zeroForOne
-            ? (key.currency0, key.currency1)
-            : (key.currency1, key.currency0);
-
-        transferFrom(currencyIn, msg.sender, uint256(amountIn));
-
-        if (currencyIn != address(0)) {
-            approve(currencyIn, uint160(amountIn), uint48(block.timestamp));
-        }
+        // Write your code here
 
         // UniversalRouter inputs
-        bytes memory commands = abi.encodePacked(uint8(Commands.V4_SWAP));
+        bytes memory commands;
         bytes[] memory inputs = new bytes[](1);
 
         // V4 actions and params
-        bytes memory actions = abi.encodePacked(
-            uint8(Actions.SWAP_EXACT_IN_SINGLE),
-            uint8(Actions.SETTLE_ALL),
-            uint8(Actions.TAKE_ALL)
-        );
+        bytes memory actions;
         bytes[] memory params = new bytes[](3);
-        // SWAP_EXACT_IN_SINGLE
-        params[0] = abi.encode(
-            IV4Router.ExactInputSingleParams({
-                poolKey: key,
-                zeroForOne: zeroForOne,
-                amountIn: amountIn,
-                amountOutMinimum: amountOutMin,
-                hookData: bytes("")
-            })
-        );
-        // SETTLE_ALL (currency, max amount)
-        params[1] = abi.encode(currencyIn, uint256(amountIn));
-        // TAKE_ALL (currency, min amount)
-        params[2] = abi.encode(currencyOut, uint256(amountOutMin));
-
-        // Universal router input
-        inputs[0] = abi.encode(actions, params);
-
-        router.execute{value: msg.value}(commands, inputs, block.timestamp);
-
-        // Withdraw currencies to msg.sender
-        withdraw(key.currency0, msg.sender);
-        withdraw(key.currency1, msg.sender);
     }
 
     function approve(address token, uint160 amount, uint48 expiration)

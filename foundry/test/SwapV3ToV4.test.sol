@@ -21,9 +21,12 @@ contract SwapV3ToV4Test is Test, TestHelper {
     function setUp() public {
         helper = new TestHelper();
 
-        deal(WETH, address(this), 100 * 1e18);
         ex = new SwapV3ToV4();
 
+        deal(USDC, address(this), 1000 * 1e6);
+        deal(WETH, address(this), 100 * 1e18);
+
+        usdc.approve(address(ex), type(uint256).max);
         weth.approve(address(ex), type(uint256).max);
 
         poolKey = PoolKey({
@@ -35,29 +38,74 @@ contract SwapV3ToV4Test is Test, TestHelper {
         });
     }
 
-    function test_swap_zero_for_one() public {
-        // Swap WETH to USDC
-        helper.set("Before swap USDC", usdc.balanceOf(address(this)));
+    function test_swap_weth_to_eth() public {
+        // vm.skip(true);
+
+        // Swap WETH to USDC -> ETH
+        helper.set("Before swap ETH", address(this).balance);
         helper.set("Before swap WETH", weth.balanceOf(address(this)));
+        helper.set("Before swap USDC", usdc.balanceOf(address(this)));
 
         uint128 amountIn = 1e18;
         ex.swap({
-            key: poolKey,
-            v3TokenIn: WETH,
-            v3AmountIn: amountIn,
-            v4AmountOutMin: 1
+            v3: SwapV3ToV4.V3Params({
+                tokenIn: WETH,
+                tokenOut: USDC,
+                poolFee: 3000,
+                amountIn: amountIn
+            }),
+            v4: SwapV3ToV4.V4Params({key: poolKey, amountOutMin: 1})
         });
 
-        helper.set("After swap USDC", usdc.balanceOf(address(this)));
+        helper.set("After swap ETH", address(this).balance);
         helper.set("After swap WETH", weth.balanceOf(address(this)));
+        helper.set("After swap USDC", usdc.balanceOf(address(this)));
 
-        int256 d0 = helper.delta("After swap WETH", "Before swap WETH");
-        int256 d1 = helper.delta("After swap USDC", "Before swap USDC");
+        int256 d0 = helper.delta("After swap ETH", "Before swap ETH");
+        int256 d1 = helper.delta("After swap WETH", "Before swap WETH");
+        int256 d2 = helper.delta("After swap USDC", "Before swap USDC");
 
-        console.log("WETH delta: %e", d0);
-        console.log("USDC delta: %e", d1);
+        console.log("ETH delta: %e", d0);
+        console.log("WETH delta: %e", d1);
+        console.log("USDC delta: %e", d2);
 
-        // assertLt(d0, 0, "WETH delta");
-        // assertGt(d1, 0, "USDC delta");
+        assertGt(d0, 0, "ETH delta");
+        assertLt(d1, 0, "WETH delta");
+        assertEq(d2, 0, "USDC delta");
+    }
+
+    function test_swap_usdc_to_usdc() public {
+        // vm.skip(true);
+
+        // Swap USDC to WETH -> ETH -> USDC
+        helper.set("Before swap ETH", address(this).balance);
+        helper.set("Before swap WETH", weth.balanceOf(address(this)));
+        helper.set("Before swap USDC", usdc.balanceOf(address(this)));
+
+        uint128 amountIn = 1000 * 1e6;
+        ex.swap({
+            v3: SwapV3ToV4.V3Params({
+                tokenIn: USDC,
+                tokenOut: WETH,
+                poolFee: 3000,
+                amountIn: amountIn
+            }),
+            v4: SwapV3ToV4.V4Params({key: poolKey, amountOutMin: 1})
+        });
+
+        helper.set("After swap ETH", address(this).balance);
+        helper.set("After swap WETH", weth.balanceOf(address(this)));
+        helper.set("After swap USDC", usdc.balanceOf(address(this)));
+
+        int256 d0 = helper.delta("After swap ETH", "Before swap ETH");
+        int256 d1 = helper.delta("After swap WETH", "Before swap WETH");
+        int256 d2 = helper.delta("After swap USDC", "Before swap USDC");
+
+        console.log("ETH delta: %e", d0);
+        console.log("WETH delta: %e", d1);
+        console.log("USDC delta: %e", d2);
+
+        assertEq(d0, 0, "ETH delta");
+        assertEq(d1, 0, "WETH delta");
     }
 }

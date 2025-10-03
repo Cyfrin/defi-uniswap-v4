@@ -2,24 +2,16 @@
 pragma solidity 0.8.30;
 
 import {IERC20} from "../interfaces/IERC20.sol";
-import {IPermit2} from "../interfaces/IPermit2.sol";
 import {IUniversalRouter} from "../interfaces/IUniversalRouter.sol";
 import {IV4Router} from "../interfaces/IV4Router.sol";
 import {Actions} from "../libraries/Actions.sol";
 import {ActionConstants} from "../libraries/ActionConstants.sol";
 import {Commands} from "../libraries/Commands.sol";
 import {PoolKey} from "../types/PoolKey.sol";
-import {
-    UNIVERSAL_ROUTER,
-    PERMIT2,
-    POOL_MANAGER,
-    USDC,
-    WETH
-} from "../Constants.sol";
+import {UNIVERSAL_ROUTER, POOL_MANAGER, WETH} from "../Constants.sol";
 
 contract SwapV3ToV4 {
     IUniversalRouter constant router = IUniversalRouter(UNIVERSAL_ROUTER);
-    IPermit2 constant permit2 = IPermit2(PERMIT2);
 
     receive() external payable {}
 

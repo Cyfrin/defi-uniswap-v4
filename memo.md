@@ -33,15 +33,14 @@
     - [`payOrPermit2Transfer`](https://github.com/Uniswap/universal-router/blob/3663f6db6e2fe121753cd2d899699c2dc75dca86/contracts/modules/Permit2Payments.sol#L42-L45)
 
 - [x] Exercises - execute commands
-- V3 to V4 Multi hop swap
-  - [ ] TODO: explanation
+- [V3 to V4 Multi hop swap](./notes/uni_router_v3_v4_swap.png)
+  - [x] Excalidraw
         -> Swap on V3
         -> Send to V4 PoolManager
         -> Call `SETTLE` with `ActionConstants.CONTRACT_BALANCE`
         -> Call `SWAP` with amount = `ActionConstants.OPEN_DELTA`
         -> Call `TAKE_ALL`
-
-  - [ ] TODO: Exercise
+  - [x] Exercise
 
 - quoting
   - [ ] TODO: explanation
